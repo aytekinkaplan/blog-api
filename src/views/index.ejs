@@ -1,15 +1,108 @@
-<h2>Latest Blog Posts</h2>
+<div class="container">
+  <div class="main-content">
+    <h2>Welcome to My Blog</h2>
 
-<% if (blogs && blogs.length > 0) { %>
-<ul>
-  <% blogs.forEach(function(blog) { %>
-  <li>
-    <h3><a href="/blog/<%= blog._id %>"><%= blog.title %></a></h3>
-    <p><%= blog.content.substring(0, 100) %>...</p>
-    <small>Posted on <%= blog.createdAt.toDateString() %></small>
-  </li>
-  <% }); %>
-</ul>
-<% } else { %>
-<p>No blog posts available.</p>
-<% } %>
+    <div id="userStatus">
+      <% if (locals.user) { %>
+      <p>
+        Welcome, <%= user.username %>! <button id="logoutBtn">Logout</button>
+      </p>
+      <% } else { %>
+      <p>
+        You are not logged in. <a href="/login">Login</a> or
+        <a href="/register">Register</a>
+      </p>
+      <% } %>
+    </div>
+
+    <div id="searchForm">
+      <h3>Search Blogs</h3>
+      <form id="blogSearchForm">
+        <input type="text" id="searchQuery" name="searchQuery" required />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
+    <h3>Latest Blog Posts</h3>
+
+    <div id="blogPosts">
+      <% blogs.forEach(function(blog) { %>
+      <div class="blog-post">
+        <h3><a href="/blog/<%= blog._id %>"><%= blog.title %></a></h3>
+        <p><%= blog.content.substring(0, 200) %>...</p>
+        <small>
+          Posted by <%= blog.author.username %> on <%=
+          blog.createdAt.toDateString() %> | Category:
+          <a href="/category/<%= blog.category._id %>"
+            ><%= blog.category.name %></a
+          >
+          <% if (blog.tags && blog.tags.length > 0) { %> | Tags: <%
+          blog.tags.forEach(function(tag) { %>
+          <a href="/tag/<%= tag %>" class="tag"><%= tag %></a>
+          <% }); %> <% } %>
+        </small>
+      </div>
+      <% }); %>
+    </div>
+
+    <% if (locals.user) { %>
+    <div id="createBlogForm">
+      <h3>Create a New Blog Post</h3>
+      <form id="newBlogForm">
+        <div>
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title" required />
+        </div>
+        <div>
+          <label for="content">Content:</label>
+          <textarea id="content" name="content" required></textarea>
+        </div>
+        <div>
+          <label for="category">Category:</label>
+          <select id="category" name="category">
+            <% categories.forEach(function(category) { %>
+            <option value="<%= category._id %>"><%= category.name %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div>
+          <label for="tags">Tags (comma-separated):</label>
+          <input type="text" id="tags" name="tags" />
+        </div>
+        <button type="submit">Create Post</button>
+      </form>
+    </div>
+    <% } %>
+  </div>
+
+  <div class="sidebar">
+    <div class="categories">
+      <h3>Categories</h3>
+      <ul>
+        <% categories.forEach(function(category) { %>
+        <li>
+          <a href="/category/<%= category._id %>"><%= category.name %></a>
+        </li>
+        <% }); %>
+      </ul>
+    </div>
+    <div class="recent-posts">
+      <h3>Recent Posts</h3>
+      <ul>
+        <% recentPosts.forEach(function(post) { %>
+        <li><a href="/blog/<%= post._id %>"><%= post.title %></a></li>
+        <% }); %>
+      </ul>
+    </div>
+    <div class="authors">
+      <h3>Authors</h3>
+      <ul>
+        <% authors.forEach(function(author) { %>
+        <li><a href="/author/<%= author._id %>"><%= author.username %></a></li>
+        <% }); %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="/js/main.js"></script>

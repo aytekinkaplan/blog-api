@@ -1,0 +1,13 @@
+<div class="blog-post">
+  <h3><a href="/blog/<%= post._id %>"><%= post.title %></a></h3>
+  <p><%= post.content.substring(0, 200) %>...</p>
+  <small>
+    Posted by <%= post.author.username %> on <%= new
+    Date(post.createdAt).toDateString() %> | Category:
+    <a href="/category/<%= post.category._id %>"><%= post.category.name %></a>
+    <% if (post.tags && post.tags.length > 0) { %> | Tags: <%
+    post.tags.forEach(function(tag) { %>
+    <a href="/tag/<%= tag %>" class="tag"><%= tag %></a>
+    <% }); %> <% } %>
+  </small>
+</div>

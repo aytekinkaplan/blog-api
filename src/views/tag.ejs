@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<h1><%= title %></h1>
+
+<% if (blogs.length > 0) { %> <% blogs.forEach(function(blog) { %>
+<div class="blog-post">
+  <h2><a href="/blog/<%= blog._id %>"><%= blog.title %></a></h2>
+  <p><%= blog.content.substring(0, 200) %>...</p>
+  <small>
+    Posted by <%= blog.author.username %> on <%= blog.createdAt.toDateString()
+    %> | Category:
+    <a href="/category/<%= blog.category._id %>"><%= blog.category.name %></a>
+    <% if (blog.tags && blog.tags.length > 0) { %> | Tags: <%
+    blog.tags.forEach(function(tag) { %>
+    <a href="/tag/<%= tag %>" class="tag"><%= tag %></a>
+    <% }); %> <% } %>
+  </small>
+</div>
+<% }); %> <% } else { %>
+<p>No blog posts found with this tag.</p>
+<% } %> <%- include('partials/footer') %>

@@ -1,0 +1,10 @@
+<div class="authors-list">
+  <h3>Our Authors</h3>
+  <ul>
+    <% authors.forEach(function(author) { %>
+    <li>
+      <a href="/author/<%= author._id %>"><%= author.username %></a>
+    </li>
+    <% }); %>
+  </ul>
+</div>
